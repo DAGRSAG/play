@@ -1,6 +1,7 @@
 name: Yukon Stack Build
 
 on:
+  push:
   workflow_dispatch:
      inputs:
       triggerJobName:
