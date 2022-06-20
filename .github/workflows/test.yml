@@ -1,0 +1,118 @@
+name: Yukon Stack Build
+
+on:
+  workflow_dispatch:
+     inputs:
+      triggerJobName:
+        description: 'Name of the job which should be triggered'
+        required: false
+
+jobs:
+
+################################################################################
+  InitWorkflow:
+################################################################################
+    runs-on: [ ubunut-latest ]
+
+    steps:
+  
+    - uses: actions/upload-artifact@v2
+      with:
+        name: partialBuildChangedFiles
+        path: ${{runner.temp}}/partialbuild.txt
+
+################################################################################
+  DocuControllerBuild:
+################################################################################
+    runs-on: [ ubunut-latest ]
+
+    needs: InitWorkflow
+
+    steps:
+
+    - uses: actions/checkout@v2
+      with:
+        lfs: 'true'
+        persist-credentials: 'false'
+
+    - name: Build Docu
+      shell: bash
+      run: |
+        echo docu
+    
+################################################################################
+  BaseControllerBuild:
+################################################################################
+    runs-on: [ ubunut-latest ]
+
+    needs: InitWorkflow
+
+    steps:
+
+    - uses: actions/checkout@v2
+      with:
+        lfs: 'true'
+        persist-credentials: 'false'
+
+       
+    - name: Build Base
+      shell: bash
+      run: |
+        echo base
+
+################################################################################
+  MiscAppsControllerBuild:
+################################################################################
+    runs-on: [ ubunut-latest ]
+
+    needs: [InitWorkflow, DocuControllerBuild, BaseControllerBuild]
+
+    steps:
+
+    - uses: actions/checkout@v2
+      with:
+        lfs: 'true'
+        persist-credentials: 'false'
+
+    - name: Build MiscApps
+      shell: bash
+      run: |
+        echo misc
+    
+################################################################################
+  SetupControllerBuild:
+################################################################################
+    runs-on: [ ubunut-latest ]
+
+    needs: [InitWorkflow, BaseControllerBuild, MiscAppsControllerBuild]
+
+    steps:
+
+    - uses: actions/checkout@v2
+      with:
+        lfs: 'true'
+        persist-credentials: 'false'
+        
+    - name: Build Setup
+      shell: bash
+      run: |
+        echo setup
+    
+################################################################################
+  DockerControllerBuild:
+################################################################################
+    runs-on: [ ubunut-latest ]
+
+    needs: [InitWorkflow, BaseControllerBuild, MiscAppsControllerBuild]
+
+    steps:
+
+    - uses: actions/checkout@v2
+      with:
+        lfs: 'true'
+        persist-credentials: 'false'
+      
+    - name: Build Docker
+      shell: bash
+      run: |
+        echo Docker
