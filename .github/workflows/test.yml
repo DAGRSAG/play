@@ -12,7 +12,7 @@ jobs:
 ################################################################################
   InitWorkflow:
 ################################################################################
-    runs-on: [ ubunut-latest ]
+    runs-on: [ ubuntu-latest ]
 
     steps:
   
@@ -24,7 +24,7 @@ jobs:
 ################################################################################
   DocuControllerBuild:
 ################################################################################
-    runs-on: [ ubunut-latest ]
+    runs-on: [ ubuntu-latest ]
 
     needs: InitWorkflow
 
@@ -43,7 +43,7 @@ jobs:
 ################################################################################
   BaseControllerBuild:
 ################################################################################
-    runs-on: [ ubunut-latest ]
+    runs-on: [ ubuntu-latest ]
 
     needs: InitWorkflow
 
@@ -63,7 +63,7 @@ jobs:
 ################################################################################
   MiscAppsControllerBuild:
 ################################################################################
-    runs-on: [ ubunut-latest ]
+    runs-on: [ ubuntu-latest ]
 
     needs: [InitWorkflow, DocuControllerBuild, BaseControllerBuild]
 
@@ -82,7 +82,7 @@ jobs:
 ################################################################################
   SetupControllerBuild:
 ################################################################################
-    runs-on: [ ubunut-latest ]
+    runs-on: [ ubuntu-latest ]
 
     needs: [InitWorkflow, BaseControllerBuild, MiscAppsControllerBuild]
 
@@ -101,7 +101,7 @@ jobs:
 ################################################################################
   DockerControllerBuild:
 ################################################################################
-    runs-on: [ ubunut-latest ]
+    runs-on: [ ubuntu-latest ]
 
     needs: [InitWorkflow, BaseControllerBuild, MiscAppsControllerBuild]
 
